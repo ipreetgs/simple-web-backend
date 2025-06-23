@@ -1,0 +1,43 @@
+pipeline:
+  name: SimpleWeb_Python_CI
+  identifier: SimpleWeb_Python_CI
+  projectIdentifier: DemoTx
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1702454216196
+        repoName: simple-web-backend
+        build: <+input>
+  stages:
+    - stage:
+        name: Build_and_artifact
+        identifier: Build_and_artifact
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+            paths: []
+          sharedPaths:
+            - /share/opt
+          buildIntelligence:
+            enabled: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Sh
+                    command: echo 'Pipeline started'
