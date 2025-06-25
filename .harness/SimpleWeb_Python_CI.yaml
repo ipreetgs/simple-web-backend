@@ -41,3 +41,23 @@ pipeline:
                   spec:
                     shell: Sh
                     command: echo 'Pipeline started'
+              - step:
+                  type: Semgrep
+                  name: Semgrep
+                  identifier: Semgrep
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: critical
+                      args:
+                        cli: "--json --output semgrep-results.json"
+                    settings:
+                      SEMGREP_APP_TOKEN: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
+                    auth:
+                      access_token: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
