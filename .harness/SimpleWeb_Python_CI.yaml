@@ -34,11 +34,11 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: Run_1
-                  identifier: Run_1
+                  name: test connection
+                  identifier: test_connection
                   spec:
                     shell: Sh
-                    command: echo 'Pipeline started'
+                    command: echo "pipeline started"
               - step:
                   type: Semgrep
                   name: Semgrep
