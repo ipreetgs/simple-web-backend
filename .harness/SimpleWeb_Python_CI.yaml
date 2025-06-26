@@ -22,8 +22,6 @@ pipeline:
             enabled: true
             override: false
             paths: []
-          sharedPaths:
-            - /share/opt
           buildIntelligence:
             enabled: false
           platform:
