@@ -30,7 +30,7 @@ pipeline:
             os: Linux
             arch: Amd64
           runtime:
-            type: Cloud
+            type: Docker
             spec: {}
           execution:
             steps:
@@ -61,3 +61,5 @@ pipeline:
                       SEMGREP_APP_TOKEN: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
                     auth:
                       access_token: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
+        delegateSelectors:
+          - aws-delegate
