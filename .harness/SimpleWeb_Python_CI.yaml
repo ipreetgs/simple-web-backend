@@ -3,7 +3,8 @@ pipeline:
   identifier: SimpleWeb_Python_CI
   projectIdentifier: DemoTx
   orgIdentifier: default
-  tags: {}
+  tags:
+    ai_generated: "true"
   properties:
     ci:
       codebase:
@@ -54,10 +55,11 @@ pipeline:
                         level: info
                       fail_on_severity: critical
                       args:
-                        cli: "--json --output semgrep-results.json"
+                        cli: "--json --output semgrep-results.json --disable-version-check"
                     settings:
                       SEMGREP_APP_TOKEN: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
                     auth:
                       access_token: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
-        delegateSelectors:
-          - aws-delegate
+                  timeout: 10m
+            rollbackSteps: []
+  description: This pipeline was updated by Harness AI on 2025-06-26 06:59:11 UTC by Gurpreet.
