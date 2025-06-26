@@ -3,8 +3,7 @@ pipeline:
   identifier: SimpleWeb_Python_CI
   projectIdentifier: DemoTx
   orgIdentifier: default
-  tags:
-    ai_generated: "true"
+  tags: {}
   properties:
     ci:
       codebase:
@@ -64,4 +63,4 @@ pipeline:
             rollbackSteps: []
         delegateSelectors:
           - aws-delegate
-  description: This pipeline was updated by Harness AI on 2025-06-26 06:59:11 UTC by Gurpreet.
+  description: This pipeline was updated by Gurpreet.
