@@ -62,4 +62,6 @@ pipeline:
                       access_token: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
                   timeout: 10m
             rollbackSteps: []
+        delegateSelectors:
+          - aws-delegate
   description: This pipeline was updated by Harness AI on 2025-06-26 06:59:11 UTC by Gurpreet.
