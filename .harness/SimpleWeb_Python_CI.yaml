@@ -86,6 +86,26 @@ pipeline:
                     tags:
                       - $<+pipeline.sequenceId>
                     caching: true
+              - step:
+                  type: AquaTrivy
+                  name: AquaTrivy
+                  identifier: AquaTrivy
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: container
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: critical
+                    privileged: true
+                    image:
+                      type: docker_v2
+                      tag: <+pipeline.sequenceId>
+                      name: gurpreetghs/simple_python_be
+                      domain: hub.docker.com
         delegateSelectors:
           - aws-delegate
   description: This pipeline was updated by Gurpreet.
@@ -104,4 +124,4 @@ pipeline:
       type: String
       description: ""
       required: false
-      value: <+input>
+      value: "2312"
