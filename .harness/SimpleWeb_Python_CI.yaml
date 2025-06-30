@@ -54,8 +54,6 @@ pipeline:
                       log:
                         level: info
                       fail_on_severity: critical
-                      args:
-                        cli: "--config auto --upload --sarif --output=semgrep-output.sarif ."
                     settings:
                       SEMGREP_APP_TOKEN: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
                     auth:
