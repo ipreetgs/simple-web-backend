@@ -61,7 +61,31 @@ pipeline:
                     auth:
                       access_token: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
                   timeout: 10m
-            rollbackSteps: []
+              - step:
+                  type: Bandit
+                  name: Bandit
+                  identifier: Bandit
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      workspace: .
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: critical
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry
+                  identifier: BuildAndPushDockerRegistry
+                  spec:
+                    connectorRef: Gurpreetdockerhub
+                    repo: gurpreetghs/simple_python_be
+                    tags:
+                      - ${pipeline.sequenceId}
+                    caching: true
         delegateSelectors:
           - aws-delegate
   description: This pipeline was updated by Gurpreet.
