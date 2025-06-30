@@ -39,41 +39,46 @@ pipeline:
                   spec:
                     shell: Sh
                     command: echo "pipeline started"
-              - step:
-                  type: Semgrep
-                  name: Semgrep
-                  identifier: Semgrep
-                  spec:
-                    mode: orchestration
-                    config: default
-                    target:
-                      type: repository
-                      workspace: .
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
-                      fail_on_severity: critical
-                    settings:
-                      SEMGREP_APP_TOKEN: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
-                    auth:
-                      access_token: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
-                  timeout: 10m
-              - step:
-                  type: Bandit
-                  name: Bandit
-                  identifier: Bandit
-                  spec:
-                    mode: orchestration
-                    config: default
-                    target:
-                      type: repository
-                      workspace: .
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
-                      fail_on_severity: critical
+              - stepGroup:
+                  name: SAST
+                  identifier: SAST
+                  steps:
+                    - step:
+                        type: Semgrep
+                        name: Semgrep
+                        identifier: Semgrep
+                        spec:
+                          mode: orchestration
+                          config: default
+                          target:
+                            type: repository
+                            workspace: .
+                            detection: auto
+                          advanced:
+                            log:
+                              level: info
+                            fail_on_severity: critical
+                          settings:
+                            SEMGREP_APP_TOKEN: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
+                          auth:
+                            access_token: <+secrets.getValue("project.SEMGREP_APP_TOKEN")>
+                        timeout: 10m
+                    - step:
+                        type: Bandit
+                        name: Bandit
+                        identifier: Bandit
+                        spec:
+                          mode: orchestration
+                          config: default
+                          target:
+                            type: repository
+                            workspace: .
+                            detection: auto
+                          advanced:
+                            log:
+                              level: info
+                            fail_on_severity: critical
+                      contextType: Pipeline
               - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
@@ -84,26 +89,49 @@ pipeline:
                     tags:
                       - $<+pipeline.sequenceId>
                     caching: true
-              - step:
-                  type: AquaTrivy
-                  name: AquaTrivy
-                  identifier: AquaTrivy
-                  spec:
-                    mode: orchestration
-                    config: default
-                    target:
-                      type: container
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
-                      fail_on_severity: critical
-                    privileged: true
-                    image:
-                      type: docker_v2
-                      tag: <+pipeline.sequenceId>
-                      name: gurpreetghs/simple_python_be
-                      domain: hub.docker.com
+              - stepGroup:
+                  name: SCA
+                  identifier: SCA
+                  steps:
+                    - step:
+                        type: AquaTrivy
+                        name: AquaTrivy
+                        identifier: AquaTrivy
+                        spec:
+                          mode: orchestration
+                          config: default
+                          target:
+                            type: container
+                            detection: auto
+                          advanced:
+                            log:
+                              level: info
+                            fail_on_severity: critical
+                          privileged: true
+                          image:
+                            type: docker_v2
+                            tag: <+pipeline.sequenceId>
+                            name: gurpreetghs/simple_python_be
+                            domain: hub.docker.com
+                    - step:
+                        type: Grype
+                        name: Grype
+                        identifier: Grype
+                        spec:
+                          mode: orchestration
+                          config: default
+                          target:
+                            type: container
+                            detection: auto
+                          advanced:
+                            log:
+                              level: info
+                            fail_on_severity: critical
+                          privileged: true
+                          image:
+                            type: docker_v2
+                            tag: <+pipeline.sequenceId>
+                            name: gurpreetghs/simple_python_be
         delegateSelectors:
           - aws-delegate
   description: This pipeline was updated by Gurpreet.
