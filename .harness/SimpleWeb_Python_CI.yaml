@@ -84,7 +84,7 @@ pipeline:
                     connectorRef: Gurpreetdockerhub
                     repo: gurpreetghs/simple_python_be
                     tags:
-                      - ${pipeline.sequenceId}
+                      - $<+pipeline.sequenceId>
                     caching: true
         delegateSelectors:
           - aws-delegate
