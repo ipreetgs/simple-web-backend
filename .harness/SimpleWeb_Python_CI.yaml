@@ -95,6 +95,15 @@ pipeline:
                             fail_on_severity: critical
                       contextType: Pipeline
               - step:
+                  type: Run
+                  name: Update_Values
+                  identifier: Update_Values
+                  spec:
+                    shell: Sh
+                    command: |-
+                      echo "Updating Backend Secret PIN"
+                      pin=<+pipeline.variables.pin>
+              - step:
                   type: Test
                   name: UnitTest
                   identifier: UnitTest
