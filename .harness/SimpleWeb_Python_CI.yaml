@@ -12,6 +12,21 @@ pipeline:
         build: <+input>
   stages:
     - stage:
+        name: Email
+        identifier: Email
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: email
+                  identifier: email
+                  template:
+                    templateRef: Email
+                    versionLabel: v1.0
+        tags: {}
+    - stage:
         name: Build_and_artifact
         identifier: Build_and_artifact
         description: ""
