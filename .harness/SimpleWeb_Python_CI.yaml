@@ -305,6 +305,15 @@ pipeline:
                       zip -r "$OUTPUT_ZIP" "$DIST_DIR"
 
                       echo "Done: $OUTPUT_ZIP created."
+              - step:
+                  type: S3Upload
+                  name: S3Upload
+                  identifier: S3Upload
+                  spec:
+                    connectorRef: AWSW
+                    region: us-east-1
+                    bucket: python_build_be
+                    sourcePath: artifact<+pipeline.sequenceId>.zip
   description: python CI flask Backend Build Pipeline
   variables:
     - name: pin
