@@ -314,7 +314,7 @@ pipeline:
 
                       # Zip the contents of the dist directory
                       echo "Zipping contents of $DIST_DIR into $OUTPUT_ZIP"
-                      zip -r "$OUTPUT_ZIP" "$DIST_DIR"
+                      zip -r requirements.txt "$OUTPUT_ZIP" "$DIST_DIR"
 
                       echo "Done: $OUTPUT_ZIP created."
               - step:
