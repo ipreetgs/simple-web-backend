@@ -80,6 +80,48 @@ pipeline:
                             fail_on_severity: critical
                       contextType: Pipeline
               - step:
+                  type: Test
+                  name: UnitTest
+                  identifier: UnitTest
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: python:latest
+                    shell: Sh
+                    command: |-
+                      pip install -r requirements.txt
+                      coverage run -m pytest
+                      coverage report --fail-under=80
+                    intelligenceMode: true
+              - step:
+                  type: RunTests
+                  name: RunTests_1
+                  identifier: RunTests_1
+                  spec:
+                    language: Python
+                    buildTool: Pytest
+                    runOnlySelectedTests: true
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - report<+pipeline.sequenceId>.xml
+                    enableTestSplitting: false
+              - step:
+                  type: OsvScanner
+                  name: OsvScan_DependencySceck
+                  identifier: OsvScan_DependencySceck
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      workspace: .
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      fail_on_severity: critical
+              - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry
                   identifier: BuildAndPushDockerRegistry
