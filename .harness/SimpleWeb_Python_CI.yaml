@@ -200,16 +200,6 @@ pipeline:
           - aws-delegate
   description: python CI flask Backend Build Pipeline
   variables:
-    - name: DATABASE_URL
-      type: String
-      description: posgresql url
-      required: false
-      value: <+input>
-    - name: JWT_SECRET_KEY
-      type: String
-      description: ""
-      required: false
-      value: <+input>
     - name: pin
       type: String
       description: ""
