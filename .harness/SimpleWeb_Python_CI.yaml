@@ -99,10 +99,23 @@ pipeline:
                   name: Update_Values
                   identifier: Update_Values
                   spec:
-                    shell: Sh
+                    shell: Bash
                     command: |-
+                      #!/bin/bash
                       echo "Updating Backend Secret PIN"
-                      pin=<+pipeline.variables.pin>
+                      # File containing the code
+                      FILE="app.py"
+
+                      # PIN value from env or fallback default
+                      PIN=<+pipeline.variables.pin>
+
+                      # Escape special characters in PIN if necessary
+                      ESCAPED_PIN=$(printf '%s\n' "$PIN" | sed -e 's/[]\/$*.^[]/\\&/g')
+
+                      # Replace all hardcoded PINs (e.g., "2312") in the file with the env value
+                      sed -i "s/data.get(\"pin\") != \".*\"/data.get(\"pin\") != \"$ESCAPED_PIN\"/g" "$FILE"
+
+                      echo "✅ PIN updated in $FILE"
               - step:
                   type: Test
                   name: UnitTest
