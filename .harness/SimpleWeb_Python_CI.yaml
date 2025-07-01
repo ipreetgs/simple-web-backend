@@ -27,7 +27,7 @@ pipeline:
                     versionLabel: v1.0
         tags: {}
     - stage:
-        name: Build_and_artifact
+        name: BuildDockerartifact
         identifier: Build_and_artifact
         description: ""
         type: CI
