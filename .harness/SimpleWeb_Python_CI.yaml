@@ -220,6 +220,91 @@ pipeline:
                     command: echo "hello"
         delegateSelectors:
           - aws-delegate
+    - stage:
+        name: BuildWheel
+        identifier: BuildWheel
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: UpdatePIN
+                  identifier: UpdatePIN
+                  spec:
+                    shell: Bash
+                    command: |-
+                      #!/bin/bash
+
+                      # File containing the code
+                      cd myapp
+                      FILE="main.py"
+
+                      # PIN value from env or fallback default
+                      PIN=${ADMIN_PIN:-2312}
+
+                      # Escape special characters in PIN if necessary
+                      ESCAPED_PIN=$(printf '%s\n' "$PIN" | sed -e 's/[]\/$*.^[]/\\&/g')
+
+                      # Replace all hardcoded PINs (e.g., "2312") in the file with the env value
+                      sed -i "s/data.get(\"pin\") != \".*\"/data.get(\"pin\") != \"$ESCAPED_PIN\"/g" "$FILE"
+
+                      echo "✅ PIN updated in $FILE"
+              - step:
+                  type: Run
+                  name: buildWheel
+                  identifier: buildWheel
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: python:latest
+                    shell: Sh
+                    command: |-
+                      pip install build
+                      python -m build
+              - step:
+                  type: Run
+                  name: Zip_build
+                  identifier: Zip_build
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash
+
+                      # Exit if any command fails
+                      set -e
+
+                      # Define variables
+                      DIST_DIR="dist"
+                      OUTPUT_ZIP="artifact<+pipeline.sequenceId>.zip"
+
+                      # Check if the dist directory exists
+                      if [ ! -d "$DIST_DIR" ]; then
+                        echo "Error: Directory '$DIST_DIR' does not exist."
+                        exit 1
+                      fi
+
+                      # Remove existing artifact.zip if it exists
+                      if [ -f "$OUTPUT_ZIP" ]; then
+                        echo "Removing existing $OUTPUT_ZIP"
+                        rm "$OUTPUT_ZIP"
+                      fi
+
+                      # Zip the contents of the dist directory
+                      echo "Zipping contents of $DIST_DIR into $OUTPUT_ZIP"
+                      zip -r "$OUTPUT_ZIP" "$DIST_DIR"
+
+                      echo "Done: $OUTPUT_ZIP created."
   description: python CI flask Backend Build Pipeline
   variables:
     - name: pin
