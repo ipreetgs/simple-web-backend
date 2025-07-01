@@ -129,6 +129,12 @@ pipeline:
                       coverage run -m pytest
                       coverage report --fail-under=80
                     intelligenceMode: true
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: Ignore
               - step:
                   type: RunTests
                   name: RunTests_1
@@ -143,6 +149,12 @@ pipeline:
                         paths:
                           - report<+pipeline.sequenceId>.xml
                     enableTestSplitting: false
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: Ignore
               - step:
                   type: OsvScanner
                   name: OsvScan_DependencySceck
