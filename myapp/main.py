@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+from .models import *
 
 load_dotenv()
 

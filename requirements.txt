@@ -3,3 +3,8 @@ flask-cors
 flask-sqlalchemy
 psycopg2-binary
 flask-jwt-extended
+pytest
+coverage
+sqlalchemy-utils
+python-dotenv
+build
