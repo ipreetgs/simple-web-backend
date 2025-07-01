@@ -34,7 +34,7 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: test connection
+                  name: infraStatus
                   identifier: test_connection
                   spec:
                     shell: Sh
@@ -134,7 +134,7 @@ pipeline:
                             name: gurpreetghs/simple_python_be
         delegateSelectors:
           - aws-delegate
-  description: This pipeline was updated by Gurpreet.
+  description: python CI flask Backend Build Pipeline
   variables:
     - name: DATABASE_URL
       type: String
