@@ -230,6 +230,8 @@ pipeline:
                   spec:
                     shell: Sh
                     command: echo "hello"
+          sharedPaths:
+            - /shared/scan_resutls/
         delegateSelectors:
           - aws-delegate
     - stage:
