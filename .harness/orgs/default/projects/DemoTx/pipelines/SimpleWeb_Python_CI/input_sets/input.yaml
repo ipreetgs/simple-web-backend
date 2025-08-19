@@ -1,0 +1,14 @@
+inputSet:
+  name: input
+  identifier: input
+  orgIdentifier: default
+  projectIdentifier: DemoTx
+  pipeline:
+    identifier: SimpleWeb_Python_CI
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
